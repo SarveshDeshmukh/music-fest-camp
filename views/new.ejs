@@ -1,0 +1,12 @@
+<% include partials/header %>
+
+<h1>Add new festival</h1>
+
+<form action="/festivals" method = "POST">
+    <input type ="text" name ="festName" placeholder = "festival name">
+    <input type ="text" name ="festImg" placeholder = "image url">
+    <button>Submit!</button>
+</form>
+
+<a href="/festivals"> Go back!</a>
+<% include partials/footer %>
