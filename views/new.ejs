@@ -1,12 +1,26 @@
 <% include partials/header %>
 
-<h1>Add new festival</h1>
+<div class="container">
+    <div class="row">
+        <h1 style ="text-align :center">Add a new festival</h1>
+       <div style ="width:30%; margin : 40px auto">
+            
+            <form action="/festivals" method = "POST">
+                <div class="form-group">
+                    <input class="form-control" type ="text" name ="festName" placeholder = "Name"> 
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type ="text" name ="festImg" placeholder = "URL">
+                </div>
+                <div class="form-group">
+                    <button class= "btn btn-lg btn-primary btn-block">Submit!</button>    
+                </div>
+            </form>
+            <a href="/festivals"> Go back!</a>
+        </div>
+       
+    </div>
+    
+</div>
 
-<form action="/festivals" method = "POST">
-    <input type ="text" name ="festName" placeholder = "festival name">
-    <input type ="text" name ="festImg" placeholder = "image url">
-    <button>Submit!</button>
-</form>
-
-<a href="/festivals"> Go back!</a>
 <% include partials/footer %>
