@@ -1,29 +1,52 @@
-var express = require("express");
-var app = express();
-var bodyParser = require("body-parser");
+var express      = require("express"), 
+    app          = express(), 
+    bodyParser   = require("body-parser"), 
+    mongoose     = require("mongoose");
 
+mongoose.connect("mongodb://localhost/music_fest_camp", {useMongoClient : true});
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
+
+//Schema Setup
+
+var festivalSchema = new mongoose.Schema({
+    name : String,
+    image : String
+});
+
+var Festival = mongoose.model("Festival", festivalSchema);
+
+/*Festival.create(
+    {   name: "Tomorrowland", 
+        image: "https://farm1.staticflickr.com/523/32581377422_aa3065b707.jpg"
+        
+    }, function(err, festival){
+       if(err){
+           console.log(err);
+       }
+       else{
+           console.log("Newly created festival: ");
+           console.log(festival);
+       }
+    });
+*/
 
 app.get("/", function(req, res){
     res.render("landing");
 });
 
-var festivals = [
-            {name: "UMF", image: "https://farm4.staticflickr.com/3939/32084181014_0011343533.jpg"},
-            {name: "Tomorrowland", image: "https://farm1.staticflickr.com/523/32581377422_aa3065b707.jpg"},
-            {name: "Rock in Rio", image: "https://farm8.staticflickr.com/7111/7134797481_442e2a70a1.jpg"},
-            {name: "UMF", image: "https://farm4.staticflickr.com/3939/32084181014_0011343533.jpg"},
-            {name: "Tomorrowland", image: "https://farm1.staticflickr.com/523/32581377422_aa3065b707.jpg"},
-            {name: "Rock in Rio", image: "https://farm8.staticflickr.com/7111/7134797481_442e2a70a1.jpg"},
-             {name: "UMF", image: "https://farm4.staticflickr.com/3939/32084181014_0011343533.jpg"},
-            {name: "Tomorrowland", image: "https://farm1.staticflickr.com/523/32581377422_aa3065b707.jpg"},
-            {name: "Rock in Rio", image: "https://farm8.staticflickr.com/7111/7134797481_442e2a70a1.jpg"}
-        ];
         
 app.get("/festivals", function(req, res){
+    //Get all festivals from DB
+
+    Festival.find({}, function(err, allFestivals){
+        if(err){
+            
+        }else{
+            res.render("festivals", {festivals: allFestivals})
+        }
+    });
     
-        res.render("festivals", {festivals : festivals});
 });
 
 app.post("/festivals", function(req, res){
@@ -32,10 +55,17 @@ app.post("/festivals", function(req, res){
     var festName = req.body.festName;
     var festImg = req.body.festImg;
     var newFest = {name :festName, image : festImg};
-    //Push into the festivals array
     
-    festivals.push(newFest);
-    res.redirect("/festivals");
+    //Create a new festival and save to database;
+    
+    Festival.create(newFest, function(err, newlyCreated){
+        if(err){
+            console.log(err);
+        }else{
+            //Redirect back to festivals
+             res.redirect("/festivals");
+        }
+    });
 });
 
 app.get("/festivals/new", function(req, res){
