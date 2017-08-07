@@ -16,26 +16,11 @@ var festivalSchema = new mongoose.Schema({
 
 var Festival = mongoose.model("Festival", festivalSchema);
 
-/*Festival.create(
-    {   name: "Tomorrowland", 
-        image: "https://farm1.staticflickr.com/523/32581377422_aa3065b707.jpg"
-        
-    }, function(err, festival){
-       if(err){
-           console.log(err);
-       }
-       else{
-           console.log("Newly created festival: ");
-           console.log(festival);
-       }
-    });
-*/
-
 app.get("/", function(req, res){
     res.render("landing");
 });
 
-        
+    //INDEX route -     
 app.get("/festivals", function(req, res){
     //Get all festivals from DB
 
@@ -43,12 +28,13 @@ app.get("/festivals", function(req, res){
         if(err){
             
         }else{
-            res.render("festivals", {festivals: allFestivals})
+            res.render("festivals", {festivals: allFestivals});
         }
     });
     
 });
 
+    //CREATE Route add new festival to database
 app.post("/festivals", function(req, res){
     
     //Get the form data
@@ -68,6 +54,7 @@ app.post("/festivals", function(req, res){
     });
 });
 
+    //SHOW form to create new festival
 app.get("/festivals/new", function(req, res){
     res.render("new.ejs");
 });
