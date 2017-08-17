@@ -10,9 +10,9 @@ seedDB();
 mongoose.connect("mongodb://localhost/music_fest_camp", {useMongoClient : true});
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static(__dirname+ "/public"));
 
 //Schema Setup
-
 app.get("/", function(req, res){
     res.render("landing");
 });
