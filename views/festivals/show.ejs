@@ -1,16 +1,47 @@
 <% include ../partials/header %>
 
-<h1><%= festival.name %></h1>
-<img src="<%=festival.image %>">
-<p><%=festival.description %></p>
-
-<p>
-   <a class="btn btn-success" href="/festivals/<%=festival._id%>/comments/new">Add new comment</a>
-</p>
-
-<% festival.comments.forEach(function(comment){ %>
-   <p>
-       <strong><%=comment.author %></strong> - <%=comment.text %>
-   </p> 
+<div class="container">
+    <div class="row">
+      <div class="col-md-3">
+         <p class="lead">MusicFestCamp</p>
+         <div class="list-group">
+            <li class="list-group-item active">Info 1</li>
+            <li class="list-group-item">Info 2</li>
+            <li class="list-group-item">Info 3</li>
+            </li>
+         </div>
+      </div>
+      
+      <div class="col-md-9">
+         <div class="thumbnail">
+            <img class="image-responsive" src="<%=festival.image %>">
+            <div class="caption-full">
+               <h4 class="text-right">
+                  $9.00/Day
+               </h4>
+               <h4><a><%= festival.name %></a></h4>
+               <p><%=festival.description %></p>
+            </div>
+         </div>
+          <div class="well">
+             <div class="text-right">
+                <a class="btn btn-success" href="/festivals/<%=festival._id%>/comments/new">Add new comment</a>
+             </div>
+             <hr>
+             <% festival.comments.forEach(function(comment){ %>
+               <div class="row">
+                  <div class="col-md-12">
+                     <strong><%=comment.author %></strong>
+                     <span class="pull-right">10 days ago</span>
+                     <p>
+                        <%=comment.text %>
+                     </p>
+                  </div>
+               </div>
+    
 <% }); %>
+          </div>
+      </div>
+    </div>  
+</div>
 <% include ../partials/footer %>
