@@ -94,7 +94,7 @@ app.get("/festivals/:id", function(req, res){
 //COMMENT ROUTES
 //================
 
-app.get("/festivals/:id/comments/new", function(req, res){
+app.get("/festivals/:id/comments/new", isLoggedIn, function(req, res){
     Festival.findById(req.params.id, function(err, festival){
         if(err){
             console.log(err);
@@ -106,7 +106,7 @@ app.get("/festivals/:id/comments/new", function(req, res){
     
 });
 
-app.post("/festivals/:id/comments", function(req, res){
+app.post("/festivals/:id/comments", isLoggedIn, function(req, res){
     //Lookup festival using ID
     Festival.findById(req.params.id, function(err, festival){
         if(err){
@@ -164,6 +164,20 @@ app.post("/login", passport.authenticate("local",
 ,function(req, res){
     
 });
+
+// logout route
+app.get("/logout", function(req, res){
+    req.logout();
+    res.redirect("/festivals");
+});
+
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+}
+
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("Music Festival Camp has started!!!");
 });
