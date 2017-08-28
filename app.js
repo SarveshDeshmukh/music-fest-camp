@@ -3,7 +3,10 @@ var express      = require("express"),
     bodyParser   = require("body-parser"), 
     mongoose     = require("mongoose"),
     Festival     = require("./models/festival"),
-    Comment = require("./models/comment");
+    Comment      = require("./models/comment"),
+    passport     = require("passport"),
+    LocalStrategy= require("passport-local"),
+    User         = require("./models/user"),
     seedDB       = require("./seeds");
     
 seedDB();
