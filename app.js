@@ -13,7 +13,7 @@ var commentRoutes  = require("./routes/comments"),
     festivalRoutes = require("./routes/festivals"),
     indexRoutes = require("./routes/index");
     
-seedDB();
+//seedDB(); //seed the database
 mongoose.connect("mongodb://localhost/music_fest_camp", {useMongoClient : true});
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));

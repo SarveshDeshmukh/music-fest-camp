@@ -21,30 +21,30 @@ function seedDB(){
     if(err){
         console.log("Removed campground");    
     }
-    else{
-        console.log("Festival removed");
-        data.forEach(function(seed){
-        Festival.create(seed,function(err, createdFest){
-            if(err){
-                console.log(err);
-            }else{
-                console.log("Added data");
-                Comment.create({text:"This place is great for music lover",
-                 author: "Homer"   
-                }, function(err, createdComment){
-                    if(err){
-                        console.log(err);
-                    }else{
-                        createdFest.comments.push(createdComment);
-                        createdFest.save();
-                        console.log("Created campgrounds");
-                    }
-                });
-            }
+    // else{
+    //     console.log("Festival removed");
+    //     data.forEach(function(seed){
+    //     Festival.create(seed,function(err, createdFest){
+    //         if(err){
+    //             console.log(err);
+    //         }else{
+    //             console.log("Added data");
+    //             Comment.create({text:"This place is great for music lover",
+    //              author: "Homer"   
+    //             }, function(err, createdComment){
+    //                 if(err){
+    //                     console.log(err);
+    //                 }else{
+    //                     createdFest.comments.push(createdComment);
+    //                     createdFest.save();
+    //                     console.log("Created campgrounds");
+    //                 }
+    //             });
+    //         }
             
-        });
-    });
-    }
+    //     });
+    // });
+    // }
 });
     //Add a few festivals
     

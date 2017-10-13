@@ -29,6 +29,11 @@ router.post("/festivals/:id/comments", isLoggedIn, function(req, res){
                     console.log(err);
                 }
                 else{
+                    //add username and id to comment
+                    comment.author.id = req.user._id;
+                    comment.author.username = req.user.username;
+                    //Save comment
+                    comment.save();
                     festival.comments.push(comment);
                     festival.save();
                     res.redirect("/festivals/"+festival._id);

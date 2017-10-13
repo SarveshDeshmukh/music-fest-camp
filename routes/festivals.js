@@ -18,7 +18,7 @@ router.get("/", function(req, res){
 });
 
     //CREATE Route add new festival to database
-router.post("/", function(req, res){
+router.post("/", isLoggedIn, function(req, res){
     
     //Get the form data
     var festName = req.body.festName;
@@ -39,7 +39,7 @@ router.post("/", function(req, res){
 });
 
     //show form to create new festival
-router.get("/new", function(req, res){
+router.get("/new",isLoggedIn, function(req, res){
     res.render("festivals/new");
 });
 
@@ -58,6 +58,13 @@ router.get("/:id", function(req, res){
     });
     
 });
+
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+}
 
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
