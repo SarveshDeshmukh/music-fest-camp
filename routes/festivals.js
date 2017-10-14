@@ -24,7 +24,11 @@ router.post("/", isLoggedIn, function(req, res){
     var festName = req.body.festName;
     var festImg = req.body.festImg;
     var description = req.body.festDescription;
-    var newFest = {name :festName, image : festImg, description : description};
+    var author = {
+        id: req.user._id,
+        username : req.user.username,
+    }
+    var newFest = {name :festName, image : festImg, description : description, author : author};
     
     //Create a new festival and save to database;
     
@@ -32,6 +36,7 @@ router.post("/", isLoggedIn, function(req, res){
         if(err){
             console.log(err);
         }else{
+            console.log(newlyCreated);
             //Redirect back to festivals
              res.redirect("/festivals");
         }
@@ -43,10 +48,36 @@ router.get("/new",isLoggedIn, function(req, res){
     res.render("festivals/new");
 });
 
-
+    //Edit campground route
+router.get("/:id/edit", function(req, res){
+    Festival.findById(req.params.id, function(err, foundFestival){
+       if(err){
+           res.redirect("/festivals");
+       }
+       else{
+           res.render("festivals/edit", {festival : foundFestival});
+       }
+    });
+    
+});    
+    //Update campground route
+router.put("/:id", function(req, res){
+    // Find and update the correct festival
+    console.log("Festival name is "+ req.body.festival.festName);
+    Festival.findByIdAndUpdate(req.params.id, req.body.festival, function(err, updatedFestival){
+        if(err){
+        res.redirect("/festivals");
+        }else{
+           console.log("ID from the db is" + updatedFestival._id);
+            res.redirect("/festivals/"+ req.params.id);
+        }
+    });
+    //Redirect to show page!
+});
 
     //SHOW - shows more info about one festival
 router.get("/:id", function(req, res){
+    console.log("**********");
     //Find the festival with provided ID
     Festival.findById(req.params.id).populate("comments").exec(function(err, foundFestival){
         if(err){

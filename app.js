@@ -5,6 +5,7 @@ var express      = require("express"),
     Festival     = require("./models/festival"),
     Comment      = require("./models/comment"),
     passport     = require("passport"),
+    methodOverride = require("method-override"),
     LocalStrategy= require("passport-local"),
     User         = require("./models/user"),
     seedDB       = require("./seeds");
@@ -18,6 +19,7 @@ mongoose.connect("mongodb://localhost/music_fest_camp", {useMongoClient : true})
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname+ "/public"));
+app.use(methodOverride("_method"));
 
 //PASSPORT CONFIGURATION
 
@@ -39,8 +41,8 @@ app.use(function(req, res, next){
 });
 
 //Requiring routes
-app.use(indexRoutes);
-app.use(commentRoutes);
+app.use("/", indexRoutes);
+app.use("/festivals/:id/comments",commentRoutes);
 app.use("/festivals",festivalRoutes);
 
 app.listen(process.env.PORT, process.env.IP, function(){
