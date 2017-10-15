@@ -24,7 +24,10 @@
                <p>
                   <em>Submitted by <%=festival.author.username %></em>
                </p>
-               <a class ="btn btn-warning" href = "/festivals/<%=festival._id%>/edit">Edit</a>
+               <a class ="btn btn-xs btn-warning" href = "/festivals/<%=festival._id%>/edit">Edit</a>
+               <form id ="delete-form" action ="/festivals/<%=festival._id%>?_method=DELETE" method = "POST">
+                  <button class ="btn btn-xs btn-danger">Delete</button>
+               </form>
             </div>
          </div>
           <div class="well">

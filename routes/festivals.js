@@ -90,12 +90,27 @@ router.get("/:id", function(req, res){
     
 });
 
+
+//DESTROY Festival route
+router.delete("/:id", function(req, res){
+    Festival.findByIdAndRemove(req.params.id, function(err){
+        if(err){
+            res.redirect("/festivals");    
+        }else{
+            res.redirect("/festivals");   
+        }
+        
+    });
+    
+});
+
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
         return next();
     }
     res.redirect("/login");
 }
+
 
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
