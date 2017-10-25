@@ -44,24 +44,19 @@ router.post("/", isLoggedIn, function(req, res){
 });
 
     //show form to create new festival
-router.get("/new",isLoggedIn, function(req, res){
+router.get("/new", isLoggedIn, function(req, res){
     res.render("festivals/new");
 });
 
     //Edit campground route
-router.get("/:id/edit", function(req, res){
-    Festival.findById(req.params.id, function(err, foundFestival){
-       if(err){
-           res.redirect("/festivals");
-       }
-       else{
-           res.render("festivals/edit", {festival : foundFestival});
-       }
+router.get("/:id/edit", isOwner, function(req, res){
+
+           Festival.findById(req.params.id, function(err, foundFestival){
+            res.render("festivals/edit", {festival : foundFestival});
     });
-    
 });    
     //Update campground route
-router.put("/:id", function(req, res){
+router.put("/:id", isOwner, function(req, res){
     // Find and update the correct festival
     console.log("Festival name is "+ req.body.festival.festName);
     Festival.findByIdAndUpdate(req.params.id, req.body.festival, function(err, updatedFestival){
@@ -92,7 +87,7 @@ router.get("/:id", function(req, res){
 
 
 //DESTROY Festival route
-router.delete("/:id", function(req, res){
+router.delete("/:id", isOwner, function(req, res){
     Festival.findByIdAndRemove(req.params.id, function(err){
         if(err){
             res.redirect("/festivals");    
@@ -117,6 +112,40 @@ function isLoggedIn(req, res, next){
         return next();
     }
     res.redirect("/login");
+}
+
+function isOwner(req, res, next){
+    if(req.isAuthenticated()){
+           
+           Festival.findById(req.params.id, function(err, foundFestival){
+       if(err){
+           res.redirect("back");
+       }
+       else{
+           //Does the user owns teh festival
+           //console.log(foundFestival.author.id);
+           //console.log(req.user._id)
+           //if(foundFestival.author.id === req.user._id)
+           //Use .equals() because foundFestival.author.id is an object and req.user_id is a string! Result will be true!
+           
+           if(foundFestival.author.id.equals(req.user._id)){
+               next();
+               //res.render("festivals/edit", {festival : foundFestival});
+           }else{
+               res.redirect("back");
+           }
+           
+       }
+    });
+        
+    }else{
+        res.redirect("back");
+    }
+        //Does user own the festival
+        //Let user run this code
+        //Otherwise, redirect
+    //if not, redirect
+    
 }
 
 module.exports = router;
