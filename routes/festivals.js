@@ -50,7 +50,6 @@ router.get("/new", isLoggedIn, function(req, res){
 
     //Edit campground route
 router.get("/:id/edit", isOwner, function(req, res){
-            console.log("INSIDE EDIT FESTIVAL")
            Festival.findById(req.params.id, function(err, foundFestival){
             res.render("festivals/edit", {festival : foundFestival});
     });
@@ -58,12 +57,10 @@ router.get("/:id/edit", isOwner, function(req, res){
     //Update campground route
 router.put("/:id", isOwner, function(req, res){
     // Find and update the correct festival
-    console.log("Festival name is "+ req.body.festival.festName);
     Festival.findByIdAndUpdate(req.params.id, req.body.festival, function(err, updatedFestival){
         if(err){
         res.redirect("/festivals");
         }else{
-           console.log("ID from the db is" + updatedFestival._id);
             res.redirect("/festivals/"+ req.params.id);
         }
     });
@@ -116,7 +113,7 @@ function isLoggedIn(req, res, next){
 
 function isOwner(req, res, next){
     if(req.isAuthenticated()){
-           console.log("^^^^In authenticatino isOwner" + req.user._id);
+          
            Festival.findById(req.params.id, function(err, foundFestival){
        if(err){
            res.redirect("back");

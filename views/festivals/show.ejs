@@ -46,6 +46,7 @@
                      <p>
                         <%=comment.text %>
                      </p>
+                     <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
                      <a class = 'btn btn-xs btn-warning' 
                         href="/festivals/<%=festival._id %>/comments/<%=comment._id %>/edit">
                         Edit
@@ -53,6 +54,7 @@
                      <form class ="delete-form" action ="/festivals/<%=festival._id %>/comments/<%=comment._id %>?_method=DELETE" method = "POST">
                         <input type="submit" class="btn btn-xs btn-danger" value="Delete">
                      </form>
+                     <% } %>
                   </div>
                </div>
     
