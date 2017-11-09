@@ -52,6 +52,9 @@ router.get("/new", middleware.isLoggedIn, function(req, res){
     //Edit campground route
 router.get("/:id/edit", middleware.checkFestivalOwnership, function(req, res){
            Festival.findById(req.params.id, function(err, foundFestival){
+             if(err){
+                 req.flash("error", "Festival does not exist!");
+             }
             res.render("festivals/edit", {festival : foundFestival});
     });
 });    
@@ -72,8 +75,9 @@ router.put("/:id", middleware.checkFestivalOwnership, function(req, res){
 router.get("/:id", function(req, res){
     //Find the festival with provided ID
     Festival.findById(req.params.id).populate("comments").exec(function(err, foundFestival){
-        if(err){
-            console.log(err);
+        if(err || !foundFestival){
+            req.flash("error","Festival not found");
+            res.redirect("back");
         }else{
             //render show template with that festival
             res.render("festivals/show",{festival : foundFestival});
