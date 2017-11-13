@@ -24,12 +24,13 @@ router.post("/", middleware.isLoggedIn, function(req, res){
     //Get the form data
     var festName = req.body.festName;
     var festImg = req.body.festImg;
+    var festPrice = req.body.price;
     var description = req.body.festDescription;
     var author = {
         id: req.user._id,
         username : req.user.username,
     }
-    var newFest = {name :festName, image : festImg, description : description, author : author};
+    var newFest = {name :festName, image : festImg, price:festPrice, description : description, author : author};
     
     //Create a new festival and save to database;
     
